@@ -1,7 +1,7 @@
 .vscode/
 env/
 venv/
-
+*.env
 
 .cache/
 .ipynb_checkpoints/
