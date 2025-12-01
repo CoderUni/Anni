@@ -19,7 +19,7 @@ A Qwen-based code assistant fine-tuned for reasoning and solving data structures
 ### License
 
 This repository’s **model and its training code** are released under the **MIT License**.  
-All other elements, such as the **project name and logo**, are **trademarks** of the developer and owner of this repository (**Hans**) and **may not be used without explicit permission**.
+All other elements, such as **frontend code, project name and logo**, are **trademarks** of the developer and owner of this repository (**Hans**) and **may not be used without explicit permission**.
 
 ---
 
