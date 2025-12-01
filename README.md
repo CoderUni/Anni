@@ -18,17 +18,21 @@ A Qwen-based code assistant fine-tuned for reasoning and solving data structures
 
 ### License
 
-This model is released under the MIT License.
+This repository’s **model and its training code** are released under the **MIT License**.  
+All other elements, such as the **project name and logo**, are **trademarks** of the developer and owner of this repository (**Hans**) and **may not be used without explicit permission**.
 
-**Training Dataset Notice**
+---
 
-The training dataset included openly licensed sources under CC-BY-4.0, which permits commercial use with attribution.
+### Training Dataset Notice
 
-#### Attribution:
+The training dataset includes openly licensed sources under **CC-BY-4.0**, which **permits commercial use with attribution**.
+
+**Attribution:**
 
 - OpenCoderReasoning-2 (CC-BY-4.0)
 
-*The dataset itself is not included in this model release.*
+> Note: The dataset itself is **not included** in this model release.
+---
 
 ### Disclaimer
 
