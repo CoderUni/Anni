@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-export const runtime = "edge"; // 'nodejs' (default) | 'edge'
+export const runtime = "nodejs"; // 'nodejs' (default) | 'edge'
 
 export const metadata: Metadata = {
   title: "vLLM UI",
