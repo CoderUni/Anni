@@ -66,7 +66,7 @@ export default function ChatTopbar({
       // save the first and only model in the list as selectedModel in localstorage
       setChatOptions({ ...chatOptions, selectedModel: modelNames[0] });
     } catch (error) {
-      setChatOptions({ ...chatOptions, selectedModel: undefined });
+      setChatOptions({ ...chatOptions, selectedModel: '' });
       toast.error(error as string);
     }
   };
