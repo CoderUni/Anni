@@ -78,7 +78,7 @@ if __name__ == "__main__":
     # SET TO True to enable the saving options below
     # ===============================================
 
-    # Save to q4_k_m GGUF
+    # Save as q4_k_m GGUF
     if False:
         model.save_pretrained_gguf("model", tokenizer, quantization_method="q4_k_m")
 

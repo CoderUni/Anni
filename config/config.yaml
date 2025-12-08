@@ -19,7 +19,7 @@ training:
   early_stopping:
     patience: 4
     threshold: 0.002
-  test_ratio: 0.2  # For stage 1 and 2 I used 0.2, stage 3 I used 0.1, stage 4 I used 0.05
+  test_ratio: 0.2  # 0.2 for stage 1 and 2, 0.1 for stage 3, 0.05 for stage 4
 
 eval:
   batch_size: 1
