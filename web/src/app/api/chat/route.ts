@@ -93,15 +93,15 @@ export async function POST(req: Request) {
       throw new Error("Selected model is required");
     }
 
-    const baseUrl = process.env.VLLM_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_VLLM_URL;
     if (!baseUrl) throw new Error("VLLM_URL is not set");
     
     // Fix double slash issue
     const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
     const apiKey = process.env.VLLM_API_KEY;
 
-    const tokenLimit = process.env.VLLM_TOKEN_LIMIT
-      ? parseInt(process.env.VLLM_TOKEN_LIMIT)
+    const tokenLimit = process.env.NEXT_PUBLIC_VLLM_TOKEN_LIMIT
+      ? parseInt(process.env.NEXT_PUBLIC_VLLM_TOKEN_LIMIT)
       : 4096;
 
     // 1. Add System Prompt

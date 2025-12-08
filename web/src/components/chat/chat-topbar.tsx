@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import {
   CheckCircledIcon,
   CrossCircledIcon,
-  DotFilledIcon,
   HamburgerMenuIcon,
-  InfoCircledIcon,
+  ReloadIcon,
 } from "@radix-ui/react-icons";
 import { Message } from "ai/react";
-import { toast } from "sonner";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -42,135 +39,110 @@ export default function ChatTopbar({
   messages,
 }: ChatTopbarProps) {
   const hasMounted = useHasMounted();
-
   const currentModel = chatOptions && chatOptions.selectedModel;
   const [tokenLimit, setTokenLimit] = React.useState<number>(4096);
-  const [error, setError] = React.useState<string | undefined>(undefined);
+  
+  const [serverStatus, setServerStatus] = useState<"connecting" | "connected" | "error">("connecting");
 
-  const fetchData = async () => {
-    if (!hasMounted) {
-      return null;
-    }
+  const checkServerConnection = async () => {
+    if (!hasMounted) return;
+    
+    setServerStatus("connecting");
+    
     try {
       const res = await fetch(basePath + "/api/models");
 
       if (!res.ok) {
-        const errorResponse = await res.json();
-        const errorMessage = `Connection to vLLM server failed: ${errorResponse.error} [${res.status} ${res.statusText}]`;
-        throw new Error(errorMessage);
+        throw new Error(`Server returned ${res.status}`);
       }
 
       const data = await res.json();
-      // Extract the "name" field from each model object and store them in the state
-      const modelNames = data.data.map((model: any) => model.id);
-      // save the first and only model in the list as selectedModel in localstorage
-      setChatOptions({ ...chatOptions, selectedModel: modelNames[0] });
+      
+      setServerStatus("connected");
+
+      if (!currentModel && data.data && data.data.length > 0) {
+        const modelNames = data.data.map((model: any) => model.id);
+        setChatOptions({ ...chatOptions, selectedModel: modelNames[0] });
+      }
     } catch (error) {
-      setChatOptions({ ...chatOptions, selectedModel: '' });
-      toast.error(error as string);
+      console.error("Connection failed:", error);
+      setServerStatus("error");
     }
   };
 
   useEffect(() => {
-    fetchData();
+    checkServerConnection();
     getTokenLimit(basePath).then((limit) => setTokenLimit(limit));
   }, [hasMounted]);
 
-  if (!hasMounted) {
-    return (
-      <div className="md:w-full flex px-4 py-6 items-center gap-1 md:justify-center">
-        <DotFilledIcon className="w-4 h-4 text-blue-500" />
-        <span className="text-xs">Booting up..</span>
-      </div>
-    );
-  }
-
-  const chatTokens = messages.length > 0 ? encodeChat(messages) : 0;
+  if (!hasMounted) return null;
 
   return (
-    <div className="md:w-full flex px-4 py-4 items-center justify-between md:justify-center">
+    <div className="w-full flex px-4 py-4 items-center justify-between bg-background border-b z-10">
       <Sheet>
         <SheetTrigger>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 hover:bg-accent p-2 rounded-md transition-colors">
             <HamburgerMenuIcon className="md:hidden w-5 h-5" />
           </div>
         </SheetTrigger>
-        <SheetContent side="left">
-          <div>
-            <Sidebar
-              chatId={chatId || ""}
-              setChatId={setChatId}
-              isCollapsed={false}
-              isMobile={false}
-              chatOptions={chatOptions}
-              setChatOptions={setChatOptions}
-            />
-          </div>
+        <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+          <Sidebar
+            chatId={chatId || ""}
+            setChatId={setChatId}
+            isCollapsed={false}
+            isMobile={true}
+            chatOptions={chatOptions}
+            setChatOptions={setChatOptions}
+          />
         </SheetContent>
       </Sheet>
 
-      <div className="flex justify-center md:justify-between gap-4 w-full">
-        <div className="gap-1 flex items-center">
-          {currentModel !== undefined && (
-            <>
-              {isLoading ? (
-                <DotFilledIcon className="w-4 h-4 text-blue-500" />
-              ) : (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <span className="cursor-help">
-                        <CheckCircledIcon className="w-4 h-4 text-green-500" />
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      sideOffset={4}
-                      className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 rounded-sm text-xs"
-                    >
-                      <p className="font-bold">Current Model</p>
-                      <p className="text-gray-500">{currentModel}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-              <span className="text-xs">
-                {isLoading ? "Generating.." : "Ready"}
-              </span>
-            </>
+      <div className="flex items-center justify-center flex-1">
+        {/* SERVER STATUS INDICATOR */}
+        <div className="flex items-center gap-2 cursor-default select-none">
+          
+          {serverStatus === "connecting" && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted/50 border border-border">
+              <ReloadIcon className="w-3.5 h-3.5 animate-spin text-muted-foreground" />
+              <span className="text-xs text-muted-foreground font-medium">Connecting...</span>
+            </div>
           )}
-          {currentModel === undefined && (
-            <>
-              <CrossCircledIcon className="w-4 h-4 text-red-500" />
-              <span className="text-xs">Connection to vLLM server failed</span>
-            </>
-          )}
-        </div>
-        <div className="flex items-end gap-2">
-          {chatTokens > tokenLimit && (
+
+          {serverStatus === "connected" && (
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  <span>
-                    <InfoCircledIcon className="w-4 h-4 text-blue-500" />
-                  </span>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 cursor-help">
+                    <CheckCircledIcon className="w-3.5 h-3.5" />
+                    <span className="text-xs font-medium">Ready</span>
+                  </div>
                 </TooltipTrigger>
-                <TooltipContent
-                  sideOffset={4}
-                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-sm text-xs"
-                >
-                  <p className="text-gray-500">
-                    Token limit exceeded. Truncating middle messages.
-                  </p>
+                <TooltipContent side="bottom" className="text-xs">
+                  <p>Connected to vLLM</p>
+                  <p className="opacity-70 text-[10px] uppercase tracking-wide">Model: {currentModel}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           )}
-          {messages.length > 0 && (
-            <span className="text-xs text-gray-500">
-              {chatTokens} / {tokenLimit} token{chatTokens > 1 ? "s" : ""}
-            </span>
+
+          {serverStatus === "error" && (
+            <div 
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 cursor-pointer hover:bg-red-500/20 transition-colors"
+              onClick={() => checkServerConnection()}
+              title="Click to retry connection"
+            >
+              <CrossCircledIcon className="w-3.5 h-3.5" />
+              <span className="text-xs font-medium">Server Offline</span>
+            </div>
           )}
         </div>
+      </div>
+
+      <div className="flex items-center justify-end w-10">
+        {/* Spinner for generation active state */}
+        {isLoading && serverStatus === "connected" && (
+           <ReloadIcon className="w-4 h-4 text-blue-500 animate-spin" />
+        )}
       </div>
     </div>
   );

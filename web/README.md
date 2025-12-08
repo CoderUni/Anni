@@ -1,7 +1,7 @@
 <h1 align="center">
-<img src="public/logo.png" alt="vLLM Web Interface Logo" width="100" />
+<img src="public/logo.png" alt="Anni Web Interface Logo" width="100" />
 <br />
-vLLM Web Interface
+Anni Web UI
 </h1>
 
 <p align="center">
@@ -11,7 +11,7 @@ vLLM Web Interface
 </p>
 
 <p align="center">
-A modern, friendly, and responsive web interface for interacting with <a href="https://docs.vllm.ai/en/latest/">vLLM</a> language models. Built with Next.js and Shadcn UI.
+A modern, friendly, and responsive web interface for interacting with <a href="https://docs.vllm.ai/en/latest/">vLLM</a> language models. Built with Next.js and Shadcn UI. [See it in action!](https://anni.hanstan.link) *Server is offline most of the time to save costs.*
 </p>
 
 <div align="center">
@@ -69,13 +69,13 @@ Open `.env` and configure it to match your vLLM setup:
 
 ```env
 # The API endpoint for your vLLM instance
-VLLM_URL="http://localhost:8000/v1"
+NEXT_PUBLIC_VLLM_URL="http://localhost:8000/v1"
 
 # The specific model name you are serving (Must match vLLM config)
-VLLM_MODEL="BigJuicyData/Anni"
+NEXT_PUBLIC_VLLM_MODEL="BigJuicyData/Anni"
 
 # Context window limit
-VLLM_TOKEN_LIMIT="32000"
+NEXT_PUBLIC_VLLM_TOKEN_LIMIT="32000"
 
 # Default system prompt for the chat
 NEXT_PUBLIC_SYSTEM_PROMPT="You are a helpful assistant."
