@@ -7,8 +7,8 @@ import "./globals.css";
 export const runtime = "nodejs"; // 'nodejs' (default) | 'edge'
 
 export const metadata: Metadata = {
-  title: "vLLM UI",
-  description: "vLLM chatbot web interface",
+  title: "Anni",
+  description: "Anni chatbot interface demo",
 };
 
 export const viewport = {
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="dark">
           {children}
