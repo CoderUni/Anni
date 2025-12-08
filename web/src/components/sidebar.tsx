@@ -4,6 +4,7 @@ import { Edit2 } from 'lucide-react';
 import { Message } from "ai/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Logo from "../../public/logo.png";
 import { ChatOptions } from "./chat/chat-options";
 import SidebarTabs from "./sidebar-tabs";
@@ -31,6 +32,7 @@ export function Sidebar({
   chatOptions,
   setChatOptions,
 }: SidebarProps) {
+  const router = useRouter();
   const [localChats, setLocalChats] = useState<Chats>({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -99,9 +101,35 @@ export function Sidebar({
     return groupChatsByDate(chatObjects);
   };
 
-  const handleDeleteChat = (chatId: string) => {
-    localStorage.removeItem(chatId);
+  const handleDeleteChat = (chatIdToDelete: string) => {
+    const flatChats = Object.values(localChats).flat();
+    const chatIndex = flatChats.findIndex((c) => c.chatId === chatIdToDelete);
+
+    let nextChatId = "";
+
+    if (flatChats.length > 1) {
+      if (chatIndex === flatChats.length - 1) {
+        nextChatId = flatChats[chatIndex - 1].chatId;
+      } else {
+        nextChatId = flatChats[chatIndex + 1].chatId;
+      }
+    }
+
+    localStorage.removeItem(chatIdToDelete);
     setLocalChats(getLocalstorageChats());
+
+    // Auto-navigate to previous chat if the deleted chat is currently open
+    const currentChatKey = `chat_${chatId}`;
+    if (chatIdToDelete === currentChatKey) {
+      if (nextChatId) {
+        const nextUUID = nextChatId.substring(5);
+        setChatId(nextUUID);
+        router.push(`/chats/${nextUUID}`);
+      } else {
+        setChatId("");
+        router.push("/");
+      }
+    }
   };
 
   return (
@@ -116,7 +144,7 @@ export function Sidebar({
           onClick={() => setChatId("")}
           className={cn(
             "flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-all duration-200",
-            "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm", // Primary Button Style
+            "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
             "border border-transparent"
           )}
         >
