@@ -27,8 +27,8 @@ export default function SystemPrompt({
       setChatOptions({ ...chatOptions, systemPrompt: debouncedText });
       toast.success("System prompt updated");
     }
-  }, [hasMounted, debouncedText]);
-
+  }, [hasMounted, debouncedText, chatOptions, setChatOptions, systemPrompt]);
+  
   return (
     <div className="flex flex-col gap-3">
       <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-1">

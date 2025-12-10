@@ -69,7 +69,7 @@ export default function ChatPage({ chatId, setChatId }: ChatPageProps) {
     } else {
       setMessages([]);
     }
-  }, [chatId]); // Remove setMessages dependency to avoid loops
+  }, [chatId, setMessages]);
 
   React.useEffect(() => {
     // Save messages to local storage whenever they change

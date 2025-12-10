@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   CheckCircledIcon,
   CrossCircledIcon,
@@ -41,14 +41,14 @@ export default function ChatTopbar({
   const hasMounted = useHasMounted();
   const currentModel = chatOptions && chatOptions.selectedModel;
   const [tokenLimit, setTokenLimit] = React.useState<number>(4096);
-  
+
   const [serverStatus, setServerStatus] = useState<"connecting" | "connected" | "error">("connecting");
 
-  const checkServerConnection = async () => {
+  const checkServerConnection = useCallback(async () => {
     if (!hasMounted) return;
-    
+
     setServerStatus("connecting");
-    
+
     try {
       const res = await fetch(basePath + "/api/models");
 
@@ -57,23 +57,22 @@ export default function ChatTopbar({
       }
 
       const data = await res.json();
-      
       setServerStatus("connected");
 
       if (!currentModel && data.data && data.data.length > 0) {
         const modelNames = data.data.map((model: any) => model.id);
-        setChatOptions({ ...chatOptions, selectedModel: modelNames[0] });
+        setChatOptions((prev) => ({ ...prev, selectedModel: modelNames[0] }));
       }
     } catch (error) {
       console.error("Connection failed:", error);
       setServerStatus("error");
     }
-  };
+  }, [hasMounted, currentModel, setChatOptions]);
 
   useEffect(() => {
     checkServerConnection();
     getTokenLimit(basePath).then((limit) => setTokenLimit(limit));
-  }, [hasMounted]);
+  }, [hasMounted, checkServerConnection]);
 
   if (!hasMounted) return null;
 
@@ -100,7 +99,7 @@ export default function ChatTopbar({
       <div className="flex items-center justify-center flex-1">
         {/* SERVER STATUS INDICATOR */}
         <div className="flex items-center gap-2 cursor-default select-none">
-          
+
           {serverStatus === "connecting" && (
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted/50 border border-border">
               <ReloadIcon className="w-3.5 h-3.5 animate-spin text-muted-foreground" />
@@ -126,7 +125,7 @@ export default function ChatTopbar({
           )}
 
           {serverStatus === "error" && (
-            <div 
+            <div
               className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 cursor-pointer hover:bg-red-500/20 transition-colors"
               onClick={() => checkServerConnection()}
               title="Click to retry connection"
@@ -141,7 +140,7 @@ export default function ChatTopbar({
       <div className="flex items-center justify-end w-10">
         {/* Spinner for generation active state */}
         {isLoading && serverStatus === "connected" && (
-           <ReloadIcon className="w-4 h-4 text-blue-500 animate-spin" />
+          <ReloadIcon className="w-4 h-4 text-blue-500 animate-spin" />
         )}
       </div>
     </div>
