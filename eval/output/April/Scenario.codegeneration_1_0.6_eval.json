@@ -1,0 +1,286 @@
+[
+    {
+        "pass@1": 0.4166666666666667,
+        "detail": {
+            "pass@1": {
+                "0": 1.0,
+                "1": 0.0,
+                "2": 1.0,
+                "3": 1.0,
+                "4": 1.0,
+                "5": 0.0,
+                "6": 1.0,
+                "7": 0.0,
+                "8": 0.0,
+                "9": 0.0,
+                "10": 0.0,
+                "11": 0.0
+            }
+        }
+    },
+    {
+        "0": [
+            [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ]
+        ],
+        "1": [
+            [
+                true,
+                true,
+                false
+            ]
+        ],
+        "2": [
+            [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ]
+        ],
+        "3": [
+            [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ]
+        ],
+        "4": [
+            [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ]
+        ],
+        "5": [
+            [
+                -4
+            ]
+        ],
+        "6": [
+            [
+                true,
+                true,
+                true,
+                true,
+                true
+            ]
+        ],
+        "7": [
+            [
+                -2
+            ]
+        ],
+        "8": [
+            [
+                -4
+            ]
+        ],
+        "9": [
+            [
+                -2
+            ]
+        ],
+        "10": [
+            [
+                -2
+            ]
+        ],
+        "11": [
+            [
+                -2
+            ]
+        ]
+    },
+    [
+        [
+            "{\"execution time\": 0.001482248306274414}"
+        ],
+        [
+            "{\"output\": \"-1\", \"inputs\": \"[[2, 2, 3, 3], 0, 9]\", \"expected\": \"9\", \"error_code\": -2, \"error_message\": \"Wrong Answer\"}"
+        ],
+        [
+            "{\"execution time\": 0.14455723762512207}"
+        ],
+        [
+            "{\"execution time\": 0.16547656059265137}"
+        ],
+        [
+            "{\"execution time\": 0.18699002265930176}"
+        ],
+        [
+            "{\"error_code\": -4, \"error_message\": \"Error during testing: expected an indented block after function definition on line 38 (<string>, line 38)\"}"
+        ],
+        [
+            "{\"execution time\": 2.0665903091430664}"
+        ],
+        [
+            "{\"output\": \"11\\n\", \"inputs\": \"1\\n3 1\\n6 3 8\\n3 5 0\\n2 7 3\", \"expected\": \"12\", \"error_code\": -2, \"error_message\": \"Wrong answer at output_line_idx=0: 11 != 12\"}"
+        ],
+        [
+            "{\"error_code\": -4, \"error_message\": \"Error during testing: expected an indented block after function definition on line 38 (<string>, line 38)\"}"
+        ],
+        [
+            "{\"output\": \"512\\n512\\n0\\n\", \"inputs\": \"3\\n3 3\\nAAB\\nAAB\\nBBB\\n3 3\\nBBA\\nABA\\nAAB\\n3 4\\nBAAB\\nBABA\\nBBAA\", \"expected\": \"2\\n0\\n2\", \"error_code\": -2, \"error_message\": \"Wrong answer at output_line_idx=0: 512 != 2\"}"
+        ],
+        [
+            "{\"output\": \"0\\n\", \"inputs\": \"2\\nBWBW\", \"expected\": \"1\", \"error_code\": -2, \"error_message\": \"Wrong answer at output_line_idx=0: 0 != 1\"}"
+        ],
+        [
+            "{\"output\": \"No\\nNo\\n\", \"inputs\": \"5 4 2\\n4 2\\n1 3\\n3 5\\n2 4\\n1 3\\n2 4\", \"expected\": \"Yes\\nNo\", \"error_code\": -2, \"error_message\": \"Wrong answer at output_line_idx=0: No != Yes\"}"
+        ]
+    ]
+]

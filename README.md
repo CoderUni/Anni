@@ -26,6 +26,12 @@ Anni
 
 ---
 
+## Benchmark Result (LCB):
+
+![LiveCodeBench Results](assets/livecodebench_results.png)
+
+---
+
 ## 💻 Usage
 
 **Get started immediately** using the provided Google Colab notebooks:
