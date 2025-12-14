@@ -11,7 +11,6 @@ import CodeDisplayBlock from "../code-display-block";
 import ThinkBlock from "./think-block";
 import "katex/dist/katex.min.css";
 
-// Helper to parse thinking blocks
 const parseMessageContent = (content: string) => {
   let thinkMatch = /<think>([\s\S]*?)(?:<\/think>|$)/i.exec(content);
   if (!thinkMatch && content.includes("</think>")) {
@@ -40,7 +39,6 @@ const ChatMessage = React.memo(
   ({ message, isLast, isLoading }: ChatMessageProps) => {
     const isUser = message.role === "user";
     
-    // Memoize parsing to avoid regex overhead on every render
     const { thinkContent, mainContent } = useMemo(
       () => parseMessageContent(message.content),
       [message.content]
@@ -61,15 +59,14 @@ const ChatMessage = React.memo(
       >
         <div
           className={cn(
-            "flex flex-col",
             isUser ? "items-end max-w-[85%] md:max-w-[75%] min-w-0" : "w-full items-start min-w-0"
           )}
         >
           <div
             className={cn(
-              "relative text-[15px] leading-relaxed",
+              "relative text-[15px] leading-relaxed max-w-full",
               isUser
-                ? "px-5 py-3 rounded-2xl rounded-tr-sm bg-blue-600 text-white dark:bg-zinc-800 dark:text-foreground shadow-sm break-words"
+                ? "px-5 py-3 rounded-2xl rounded-tr-sm bg-blue-600 text-white dark:bg-zinc-800 dark:text-foreground shadow-sm whitespace-pre-wrap break-words break-all"
                 : "w-full px-0 py-0"
             )}
           >
@@ -77,7 +74,7 @@ const ChatMessage = React.memo(
               <ThinkBlock content={thinkContent} isLive={isThinkingLive} />
             )}
 
-            <div className={cn(!isUser && thinkContent && "mt-4")}>
+            <div className={cn(!isUser && thinkContent && "mt-4", "overflow-hidden")}>
               <Markdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
@@ -107,35 +104,22 @@ const ChatMessage = React.memo(
                     );
                   },
                   h1: ({ children }) => (
-                    <h1 className="text-3xl font-bold mt-8 mb-4 break-words">
-                      {children}
-                    </h1>
+                    <h1 className="text-3xl font-bold mt-8 mb-4 break-words break-all">{children}</h1>
                   ),
                   h2: ({ children }) => (
-                    <h2 className="text-2xl font-semibold mt-8 mb-4 border-b pb-2 break-words">
-                      {children}
-                    </h2>
+                    <h2 className="text-2xl font-semibold mt-8 mb-4 border-b pb-2 break-words break-all">{children}</h2>
                   ),
                   h3: ({ children }) => (
-                    <h3 className="text-xl font-semibold mt-6 mb-3 break-words">
-                      {children}
-                    </h3>
+                    <h3 className="text-xl font-semibold mt-6 mb-3 break-words break-all">{children}</h3>
                   ),
                   h4: ({ children }) => (
-                    <h4 className="text-lg font-semibold mt-6 mb-3 break-words">
-                      {children}
-                    </h4>
+                    <h4 className="text-lg font-semibold mt-6 mb-3 break-words break-all">{children}</h4>
                   ),
                   p: ({ children }) => (
-                    <p className="mb-5 last:mb-0 leading-7 whitespace-pre-wrap break-words">
-                      {children}
-                    </p>
+                    <p className="mb-5 last:mb-0 leading-7 whitespace-pre-wrap break-words break-all">{children}</p>
                   ),
                   a: ({ children, ...props }: any) => (
-                    <a
-                      className="text-blue-500 hover:underline cursor-pointer font-medium break-all"
-                      {...props}
-                    >
+                    <a className="text-blue-500 hover:underline cursor-pointer font-medium break-all" {...props}>
                       {children}
                     </a>
                   ),
@@ -143,9 +127,7 @@ const ChatMessage = React.memo(
                     <ul className="list-disc pl-6 mb-5 space-y-2">{children}</ul>
                   ),
                   ol: ({ children }) => (
-                    <ol className="list-decimal pl-6 mb-5 space-y-2">
-                      {children}
-                    </ol>
+                    <ol className="list-decimal pl-6 mb-5 space-y-2">{children}</ol>
                   ),
                   li: ({ children }) => (
                     <li className="pl-1 leading-7">{children}</li>
@@ -161,14 +143,10 @@ const ChatMessage = React.memo(
                     </div>
                   ),
                   th: ({ children }) => (
-                    <th className="bg-muted px-4 py-3 border-b font-semibold">
-                      {children}
-                    </th>
+                    <th className="bg-muted px-4 py-3 border-b font-semibold">{children}</th>
                   ),
                   td: ({ children }) => (
-                    <td className="px-4 py-3 border-b last:border-0">
-                      {children}
-                    </td>
+                    <td className="px-4 py-3 border-b last:border-0">{children}</td>
                   ),
                 }}
               >
@@ -176,36 +154,22 @@ const ChatMessage = React.memo(
               </Markdown>
             </div>
 
-            {isLoading &&
-              isLast &&
-              !isUser &&
-              !isThinkingLive &&
-              mainContent.length === 0 && (
+            {isLoading && isLast && !isUser && !isThinkingLive && mainContent.length === 0 && (
                 <div className="flex items-center gap-1 h-6 mt-2 opacity-50">
                   <span className="w-1.5 h-1.5 bg-foreground rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                   <span className="w-1.5 h-1.5 bg-foreground rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                   <span className="w-1.5 h-1.5 bg-foreground rounded-full animate-bounce"></span>
                 </div>
-              )}
+            )}
           </div>
         </div>
       </div>
     );
   },
   (prevProps, nextProps) => {
-    // Custom comparison function for React.memo
-    // Returns true if props are equal (DO NOT RE-RENDER)
-    // Returns false if props are different (RE-RENDER)
-
-    // 1. If it was NOT the last message, and is still NOT the last message, 
-    // the content is static history. Do not re-render.
     const isHistory = !prevProps.isLast && !nextProps.isLast;
     if (isHistory) return true;
-
-    // 2. If loading state changed (e.g. stream finished), re-render
     if (prevProps.isLoading !== nextProps.isLoading) return false;
-
-    // 3. Otherwise, check if content changed
     return prevProps.message.content === nextProps.message.content;
   }
 );
