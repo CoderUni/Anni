@@ -29,20 +29,16 @@ const addSystemMessage = (messages: CoreMessage[], systemPrompt?: string) => {
   return messages;
 };
 
-// New helper to inject the tag if thinking is disabled
 const handleThinkingTag = (messages: CoreMessage[], includeThinking: boolean) => {
-  // If thinking is enabled (default), do nothing
   if (includeThinking) return messages;
 
-  // If thinking is disabled, find the last user message and prepend /no_think
-  // We search backwards to find the most recent prompt
   for (let i = messages.length - 1; i >= 0; i--) {
     if (messages[i].role === "user") {
       const originalContent = messages[i].content;
       if (typeof originalContent === "string") {
         messages[i].content = `/no_think ${originalContent}`;
       }
-      break; // Only tag the latest message
+      break; 
     }
   }
   return messages;
@@ -67,7 +63,6 @@ const formatMessages = (
       mappedMessages.push({ role: "assistant", content: m.content } as CoreAssistantMessage);
     } else { return; }
 
-    // tslint:disable-next-line
     const messageTokens = encodeChat([m]);
     messagesTokenCounts.push(messageTokens);
     tokenCount += messageTokens;
@@ -96,7 +91,6 @@ export async function POST(req: Request) {
     const baseUrl = process.env.NEXT_PUBLIC_VLLM_URL;
     if (!baseUrl) throw new Error("VLLM_URL is not set");
     
-    // Fix double slash issue
     const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
     const apiKey = process.env.VLLM_API_KEY;
 
@@ -104,15 +98,9 @@ export async function POST(req: Request) {
       ? parseInt(process.env.NEXT_PUBLIC_VLLM_TOKEN_LIMIT)
       : 4096;
 
-    // 1. Add System Prompt
     let processedMessages = addSystemMessage(messages, chatOptions.systemPrompt);
-
-    // 2. Handle Thinking Mode (Inject /no_think if disabled)
-    // Default to true if undefined to match UI
     const includeThinking = chatOptions.includeThinking ?? true;
     processedMessages = handleThinkingTag(processedMessages, includeThinking);
-
-    // 3. Format / Token Limit
     const formattedMessages = formatMessages(processedMessages, tokenLimit);
 
     const customOpenai = createOpenAI({
@@ -126,11 +114,14 @@ export async function POST(req: Request) {
       temperature: chatOptions.temperature,
       topP: chatOptions.topP,
       topK: chatOptions.topK,
-      // Pass min_p in extra body options
       ...{ min_p: chatOptions.minP }
     });
 
-    return result.toDataStreamResponse();
+    return result.toDataStreamResponse({
+        getErrorMessage: (error) => {
+            return (error as Error).message;
+        }
+    });
 
   } catch (error) {
     console.error(error);

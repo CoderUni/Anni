@@ -33,13 +33,11 @@ export default function ChatPage({ chatId, setChatId }: ChatPageProps) {
     setMessages,
   } = useChat({
     api: basePath + "/api/chat",
+    experimental_throttle: 50,
     onError: (error) => {
       toast.error("Something went wrong: " + error);
     },
-    // OPTIONAL: Save the assistant's partial response to storage as it streams
     onFinish: (message) => {
-       // This ensures the full response is saved when generation completes
-       // The useEffect below handles intermediate saving
     }
   });
 
@@ -83,34 +81,13 @@ export default function ChatPage({ chatId, setChatId }: ChatPageProps) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 1. GENERATE ID & HANDLE NEW CHAT LOGIC
     let currentChatId = chatId;
     if (!currentChatId) {
       currentChatId = uuidv4();
       setChatId(currentChatId);
-      
-      // 2. IMMEDIATE URL UPDATE (Shallow)
-      // This changes the browser URL to /chats/UUID without reloading the page.
-      // This ensures if they click away, they can come back to this URL.
       window.history.replaceState(null, "", `/chats/${currentChatId}`);
     }
 
-    // 3. IMMEDIATE STORAGE SAVE (User Message)
-    // We manually construct the user message here just to save it to storage 
-    // immediately so it appears in the sidebar before the stream starts.
-    const userMessage = { 
-        id: uuidv4(), 
-        content: input, 
-        role: "user" as const, 
-        createdAt: new Date() 
-    };
-    
-    // We append the new message to existing messages for storage purposes
-    const newHistory = [...messages, userMessage];
-    localStorage.setItem(`chat_${currentChatId}`, JSON.stringify(newHistory));
-    window.dispatchEvent(new Event("storage"));
-
-    // 4. PREPARE OPTIONS
     const requestOptions: ChatRequestOptions = {
       options: {
         body: {
@@ -119,7 +96,6 @@ export default function ChatPage({ chatId, setChatId }: ChatPageProps) {
       },
     };
 
-    // 5. SUBMIT (Starts the stream)
     handleSubmit(e, requestOptions);
   };
 
