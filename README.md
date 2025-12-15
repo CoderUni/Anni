@@ -1,124 +1,138 @@
-<h1 align="center">
+<div align="center">
+
 <img src="assets/logo.png" alt="Anni Logo" width="100" />
+
+# Anni
+
+<p>
+  <a href="https://huggingface.co/BigJuicyData/Anni">
+    <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Anni-ffc107?style=flat-square&logoColor=white" alt="Hugging Face"/>
+  </a>
+  <a href="https://modelscope.cn/models/quanteat/Anni">
+    <img src="https://img.shields.io/badge/🤖%20ModelScope-Anni-604ad3?style=flat-square&logoColor=white" alt="ModelScope"/>
+  </a>
+  <a href="https://github.com/CoderUni/Anni/actions/workflows/codeql.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/CoderUni/Anni/codeql.yml?style=flat-square&label=Build" alt="Build Status"/>
+  </a>
+  <a href="https://github.com/CoderUni/Anni/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"/>
+  </a>
+</p>
+
 <br />
-Anni
-</h1>
 
-<p align="center">
-  <a href="https://huggingface.co/BigJuicyData/Anni" target="_blank"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Anni-ffc107?color=ffc107&logoColor=white"/></a>&nbsp;<a href="https://modelscope.cn/models/quanteat/Anni" target="_blank"><img alt="ModelScope Model" src="https://img.shields.io/badge/🤖%20ModelScope-Anni-604ad3?color=604ad3"/></a>&nbsp;<a href="https://github.com/CoderUni/Anni/actions/workflows/codeql.yml"><img src="https://github.com/CoderUni/Anni/actions/workflows/codeql.yml/badge.svg" alt="Build Status"></a>
-</p>
+**Anni** is a high-performance code assistant built on the **Qwen3 14B** architecture. <br />
+Fine-tuned on **OpenCodeReasoning-2**, it is engineered to excel in deep algorithmic reasoning, complex data structure implementation, and competitive programming.
 
-<p align="center">
-<strong>Anni</strong> is a high-performance code assistant built upon the <strong>Qwen3 14B</strong> architecture. Fine-tuned on the <strong>OpenCodeReasoning-2</strong> dataset, Anni is engineered to excel in deep algorithmic reasoning, competitive programming logic, and the implementation of complex, high-efficiency data structures.
-</p>
+[View Demo](#-demo) • [Quick Start](#-quick-start) • [Benchmarks](#-benchmarks) • [Training](#-development-setup)
+
+</div>
 
 ---
 
-## 🚀 Model Overview
+## ✨ Key Features
 
-| Property | Value |
-|---------|--------|
-| Base Model | Qwen3 14B |
-| Model Type | Language Model for Code |
-| Context Length | 32,000 tokens |
-| Precision | BF16 / safetensors (merged) |
-| Inference Framework | vLLM compatible |
-
----
-
-## Benchmark Result (LCB):
-
-![LiveCodeBench Results](assets/livecodebench_results.png)
+| Feature | Description |
+| :--- | :--- |
+| 🧠 **Deep Reasoning** | Optimized for hard logic puzzles and algorithmic challenges. |
+| ⚡ **High Efficiency** | Supports **vLLM** serving and **GGUF** for consumer hardware. |
+| 📚 **Large Context** | **32k context window** for processing extensive codebases. |
+| 🛠️ **Dev Ready** | Comes with full training scripts, merging tools, and a web UI. |
 
 ---
 
-## 💻 Usage
+## 🎥 Demo
 
-**Get started immediately** using the provided Google Colab notebooks:
+<div align="center">
 
-*   **(Recommended) GGUF Inference :** Open the [Colab Notebook](https://colab.research.google.com/drive/16RKUtphbI1rAds_lLwPGk2cRhf9CDJDo?usp=sharing)  to run standard inference.
+  <p><em>Anni solving a <a href="https://leetcode.com/problems/dungeon-game">hard-difficulty LeetCode problem</a> in real-time</em> (1x speed on a <strong>single L40 GPU</strong>)</p>
+</div>
 
-*   **vLLM Serving:** Open the [Colab Notebook](https://colab.research.google.com/drive/1lXYtLT729qcxJPc56TllgwiGEsjIiW0Q?usp=sharing) to run inference using the vLLM server.
+---
+
+## 🚀 Quick Start
+
+Experience Anni immediately without local setup using Google Colab.
+
+| method | link | description |
+| :--- | :--- | :--- |
+| **GGUF (Recommended)** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/16RKUtphbI1rAds_lLwPGk2cRhf9CDJDo?usp=sharing) | Run standard inference on free tier GPUs. |
+| **vLLM Serving** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1lXYtLT729qcxJPc56TllgwiGEsjIiW0Q?usp=sharing) | High-throughput serving using vLLM. |
+
+---
+
+## 📊 Benchmarks
+
+Anni was evaluated on **LiveCodeBench (LCB)**, demonstrating superior performance in code generation and reasoning tasks compared to base models.
+
+<div align="center">
+  <img src="assets/livecodebench_results.jpg" alt="LiveCodeBench Results" width="85%" />
+</div>
 
 ---
 
 ## 🛠️ Development Setup
 
-### Prerequisites
+If you wish to fine-tune or run Anni locally, follow these steps.
 
-1.  **Python Dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-2.  **System Tools:**
-    Ensure `tmux` is installed on your system (required for training scripts).
+### 1. Prerequisites
+Ensure `tmux` is installed.
+```bash
+pip install -r requirements.txt
+```
 
-### Configuration
+### 2. Configuration
+Set up your environment variables for WandB, HuggingFace, and ModelScope.
 
-1.  **Environment Variables:**
-    Rename the example environment file and add your API tokens (WandB, HuggingFace, ModelScope).
-    ```bash
-    mv config/example.env config/.env
-    # Edit config/.env with your keys
-    ```
+```bash
+mv config/example.env config/.env
+# Open config/.env and paste your API keys
+```
 
-2.  **Training Config:**
-    Edit [config/config.yaml](config/config.yaml) to adjust hyperparameters.
-    *   *Note:* Specify the `LOCAL_STORAGE_PATH` in [src/train.py](src/train.py) before starting training.
+Edit `config/config.yaml` to adjust hyperparameters.
 
-### Running Training
+Note: Specify the `LOCAL_STORAGE_PATH` in `src/train.py` before starting.
 
-To start the training process, run the shell script:
+### 3. Training
+Launch the training pipeline:
 
 ```bash
 ./scripts/train.sh
 ```
 
----
-
 ## 📂 Project Structure
+```
+Anni/
+├── config/                 # Configuration files
+│
+├── scripts/                # Shell scripts for automation
+│   ├── train.sh            # Start training pipeline
+│   ├── eval.sh             # Run LiveCodeBench evaluation
+│   ├── serve.sh            # Spin up vLLM server
+│   └── terminate_train.sh  # Kill training processes
+│
+├── src/                    # Python source code
+│   ├── preprocess.py       # Downloads & preps OpenCodeReasoning-2
+│   ├── train.py            # Main fine-tuning logic
+│   ├── save.py             # Merges LoRA adapters (BF16 & GGUF)
+│   ├── inference.py        # Run inference with the fine-tuned model
+│   ├── upload.py           # Pushes to HF/ModelScope
+│   └── utils/              # Utility functions
+│
+└── web/                    # Frontend Interface
+```
+👉 [View Frontend Documentation](https://github.com/CoderUni/Anni/tree/main/web)
 
-### Source (`src/`)
-| File | Description |
-|------|-------------|
-| [`preprocess.py`](src/preprocess.py) | Downloads the [OpenCodeReasoning-2 dataset](https://huggingface.co/datasets/nvidia/OpenCodeReasoning-2) and preprocesses it for training. |
-| [`train.py`](src/train.py) | Downloads the base model and fine-tunes it on the preprocessed dataset. |
-| [`save.py`](src/save.py) | Loads the fine-tuned LoRA adapters and saves the model as merged 16-bit and GGUF formats. |
-| [`upload.py`](src/upload.py) | Uploads the merged model to Hugging Face and ModelScope. |
+## ⚖️ License & Disclaimer
 
-### Scripts (`scripts/`)
-| File | Description |
-|------|-------------|
-| [`train.sh`](scripts/train.sh) | Runs the training script with specified parameters. |
-| [`eval.sh`](scripts/eval.sh) | Evaluates the model on the LiveCodeBench dataset. |
-| [`serve.sh`](scripts/serve.sh) | Serves the model using the vLLM server. |
-| [`terminate_train.sh`](scripts/terminate_train.sh) | Terminates the training process. |
+### License
 
-### Frontend (`web/`)
-The frontend code for Anni is available in the `web` directory.
-👉 **[View Frontend Documentation](web/README.md)**
+- **Model Weights & Training Code:** Released under the MIT License.
 
----
+- **Trademarks:** The project name (**Anni**), assets, and frontend code are trademarks of the owner (Hans) and may not be used without explicit permission.
 
-## ⚖️ License
+### Dataset Attribution
 
-This repository’s **model and its training code** are released under the **MIT License**.  
-All other elements, such as **frontend code, project name and logo**, are **trademarks** of the developer and owner of this repository (**Hans**) and **may not be used without explicit permission**.
+- Trained on [OpenCoderReasoning-2](https://huggingface.co/datasets/nvidia/OpenCodeReasoning-2) (CC-BY-4.0).
 
----
-
-## 📚 Training Dataset Notice
-
-The training dataset includes openly licensed sources under **CC-BY-4.0**, which **permits commercial use with attribution**.
-
-**Attribution:**
-
-- [OpenCoderReasoning-2](https://huggingface.co/datasets/nvidia/OpenCodeReasoning-2) (CC-BY-4.0)
-
-> Note: The dataset itself is **not included** in this model release.
----
-
-## ⚠️ Disclaimer
-
-This model may generate incorrect or unsafe code.
-Evaluate and verify outputs before using in production.
+**Disclaimer**: This model may generate incorrect or unsafe code. Evaluate and verify outputs before using in production environments.
