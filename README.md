@@ -5,18 +5,7 @@
 # Anni
 
 <p>
-  <a href="https://huggingface.co/BigJuicyData/Anni">
-    <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Anni-ffc107?style=flat-square&logoColor=white" alt="Hugging Face"/>
-  </a>
-  <a href="https://modelscope.cn/models/quanteat/Anni">
-    <img src="https://img.shields.io/badge/🤖%20ModelScope-Anni-604ad3?style=flat-square&logoColor=white" alt="ModelScope"/>
-  </a>
-  <a href="https://github.com/CoderUni/Anni/actions/workflows/codeql.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/CoderUni/Anni/codeql.yml?style=flat-square&label=Build" alt="Build Status"/>
-  </a>
-  <a href="https://github.com/CoderUni/Anni/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"/>
-  </a>
+  <a href="https://huggingface.co/BigJuicyData/Anni" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Anni-ffc107?style=flat-square&logoColor=white" alt="Hugging Face"/></a>&nbsp;<a href="https://modelscope.cn/models/quanteat/Anni" target="_blank"><img src="https://img.shields.io/badge/🤖%20ModelScope-Anni-604ad3?style=flat-square&logoColor=white" alt="ModelScope"/></a>&nbsp;<a href="https://github.com/CoderUni/Anni/actions/workflows/codeql.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/CoderUni/Anni/codeql.yml?style=flat-square&label=Build" alt="Build Status"/></a>&nbsp;<a href="https://github.com/CoderUni/Anni/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"/></a>
 </p>
 
 <br />
