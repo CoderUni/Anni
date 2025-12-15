@@ -34,6 +34,8 @@ Fine-tuned on **OpenCodeReasoning-2**, it is engineered to excel in deep algorit
 
 <div align="center">
 
+https://github.com/user-attachments/assets/8898633f-fdc8-46db-887d-6bb50569be47
+
   <p><em>Anni solving a <a href="https://leetcode.com/problems/dungeon-game">hard-difficulty LeetCode problem</a> in real-time</em> (1x speed on a <strong>single L40 GPU</strong>)</p>
 </div>
 
